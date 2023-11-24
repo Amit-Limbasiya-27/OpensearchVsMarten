@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+  tempbenchmark:
+    image: ${DOCKER_REGISTRY-}tempbenchmark
+    build:
+      context: .
+      dockerfile: TempBenchmark/Dockerfile
+    networks:
+      - app_network
+    depends_on:
+      - opensearch
+      - marten-postgres
+
+  opensearch:
+    image: opensearchproject/opensearch:1.3.0
+    environment:
+      - "discovery.type=single-node"
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    volumes:
+      - ./opensearch_volume:/usr/share/opensearch/data
+    networks:
+      - app_network
+
+  marten-postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=121212
+      - POSTGRES_USER=marten-postgres
+    ports:
+      - "8080:5432"
+    volumes:
+      - ./postgres_volume:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+
+networks:
+  app_network:
+    driver: bridge

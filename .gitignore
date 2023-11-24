@@ -1,0 +1,8 @@
+/.vs/
+bin/
+obj/
+opensearch_volume/
+postgres_volume/
+docker-compose.dcproj
+TempBenchmark/bin
+TempBenchmark/obj
